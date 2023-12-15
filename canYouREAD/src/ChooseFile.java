@@ -77,6 +77,8 @@ public class ChooseFile {
         this.jsonHeader = jsonHeader;
     }
 
+    int secondCount;
+
     ChooseFile(File file, String fileName) {
         splitter = fileName.split("\\.");
         this.setFileName(splitter[1]);
@@ -93,43 +95,46 @@ public class ChooseFile {
                     value = keys.getString(i);
                     jsonObject.getString(value);
                     this.keyList.add(value);
+                    System.out.println(keyList);
                 }
 
-                for(Iterator var12 = this.keyList.iterator(); var12.hasNext(); this.count = 0) {
-                    String k = (String)var12.next();
 
-                    for(this.count = 0; this.count < jsonArray.length(); ++this.count) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(this.count);
 
-                        System.out.println(jsonObject);
-                        value = jsonObject.get(k).toString();
-                        if (this.count == 0) {
-                            title.add(value);
+                System.out.println(jsonArray.length());
+                String[] item = new String[keyList.size()];
+                for (int i = 0; i<jsonArray.length();i++) {
+                    this.count = 0;
+                    for (String key : keyList) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String keyItem = jsonObject.getString(key);
+                        item[count]=keyItem;
+                        //System.out.println(Arrays.toString(item));
+
+                        count++;
+                        if (count == keyLenght){
+                            String[] help = new String[keyLenght];
+                            secondCount=0;
+                            for (String valueOF:item){
+                                help[secondCount]=valueOF;
+                                secondCount++;
+                            }
+                            wholeList.add(help);
+                            System.out.println(Arrays.deepToString(help) + " HELP");
                         }
+                        if (i ==0 && count ==keyList.size()){
+                            /* title.add(Arrays.toString(item));
+                                System.out.println(title + " TITLE");*/
+                            title.addAll(Arrays.asList(item));
+                            System.out.println(title + "TITLE");
 
-                        String[] item = new String[8];
-                        item[0]= jsonObject.getString("A");
-                        item[1]= jsonObject.getString("B");
-                        item[2]= jsonObject.getString("C");
-                        item[3]= jsonObject.getString("D");
-                        item[4]= jsonObject.getString("E");
-                        item[5]= jsonObject.getString("F");
-                        item[6]= jsonObject.getString("G");
-                        item[7]= jsonObject.getString("H");
-
-                   /*     if (this.count > 0) {
-                            item[0] = value;
-                            this.wholeList.add(item);
-                        }*/
-                        for (String[] as: wholeList ) {
-                            System.out.println(Arrays.deepToString(as));
                         }
-                      //  System.out.println(wholeList);
                     }
-                    wholeList.add(item);
+
                 }
+
 
                // System.out.println(this.page);
+                wholeList.removeFirst();
                 table2DArray = (String[][])this.wholeList.toArray(String[][]::new);
                // System.out.println(Arrays.deepToString(table2DArray));
             } catch (Exception var10) {
