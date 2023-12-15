@@ -22,7 +22,7 @@ public class Gui {
     Gui() {
         this.frame.setTitle("Table");
         this.frame.setLayout(new BorderLayout());
-        JFileChooser chooser = new JFileChooser("canYouREAD/src");
+        JFileChooser chooser = new JFileChooser("canYouREAD/src/Files");
         chooser.showOpenDialog((Component)null);
         String f = String.valueOf(chooser.getSelectedFile());
         File file = new File(f);

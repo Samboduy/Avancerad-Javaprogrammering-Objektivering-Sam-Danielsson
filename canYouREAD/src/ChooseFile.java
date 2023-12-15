@@ -100,24 +100,38 @@ public class ChooseFile {
 
                     for(this.count = 0; this.count < jsonArray.length(); ++this.count) {
                         JSONObject jsonObject = jsonArray.getJSONObject(this.count);
+
+                        System.out.println(jsonObject);
                         value = jsonObject.get(k).toString();
                         if (this.count == 0) {
                             title.add(value);
                         }
 
-                        String[] item = new String[1];
-                        if (this.count > 0) {
+                        String[] item = new String[8];
+                        item[0]= jsonObject.getString("A");
+                        item[1]= jsonObject.getString("B");
+                        item[2]= jsonObject.getString("C");
+                        item[3]= jsonObject.getString("D");
+                        item[4]= jsonObject.getString("E");
+                        item[5]= jsonObject.getString("F");
+                        item[6]= jsonObject.getString("G");
+                        item[7]= jsonObject.getString("H");
+
+                   /*     if (this.count > 0) {
                             item[0] = value;
                             this.wholeList.add(item);
+                        }*/
+                        for (String[] as: wholeList ) {
+                            System.out.println(Arrays.deepToString(as));
                         }
+                      //  System.out.println(wholeList);
                     }
+                    wholeList.add(item);
                 }
 
-                System.out.println(this.page);
-                table2DArray = (String[][])this.wholeList.toArray((x$0) -> {
-                    return new String[x$0][];
-                });
-                System.out.println(Arrays.deepToString(table2DArray));
+               // System.out.println(this.page);
+                table2DArray = (String[][])this.wholeList.toArray(String[][]::new);
+               // System.out.println(Arrays.deepToString(table2DArray));
             } catch (Exception var10) {
                 System.out.println("Error " + var10.getMessage());
             }
@@ -126,8 +140,8 @@ public class ChooseFile {
                 this.scan = new Scanner(file);
                 String line = this.scan.nextLine();
                 header = line.split(",");
-                System.out.println(Arrays.deepToString(header));
-                System.out.println(this.getRow());
+              /* System.out.println(Arrays.deepToString(header));
+                System.out.println(this.getRow());*/
 
                 while(this.scan.hasNext()) {
                     String newLine = this.scan.nextLine();
@@ -136,11 +150,11 @@ public class ChooseFile {
                 }
 
                 this.scan.close();
-                System.out.println(this.wholeList.size());
+               // System.out.println(this.wholeList.size());
                 table2DArray = (String[][])this.wholeList.toArray((x$0) -> {
                     return new String[x$0][];
                 });
-                System.out.println(Arrays.deepToString(table2DArray));
+               // System.out.println(Arrays.deepToString(table2DArray));
             } catch (Exception var9) {
                 System.out.println("Error " + var9.getMessage());
             }
