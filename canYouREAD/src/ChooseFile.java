@@ -80,22 +80,26 @@ public class ChooseFile {
     int secondCount;
 
     ChooseFile(File file, String fileName) {
+        //splittar fram filnamnet
         splitter = fileName.split("\\.");
         this.setFileName(splitter[1]);
+        //om filnamnet är json läser den in var filen är och gör den till en jsonArray
         if (getFileName().equals("json")) {
             try {
                 json = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
                 JSONArray jsonArray = new JSONArray(json);
 
                 String value;
+                //Tar fram nycklarna så att man kan få fram värdena i filen
                 for(int i = 0; i < this.getKeyLenght(); ++i) {
+                    // kollar i första delen av arrayn och tar fram JSOnobject
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    //keys Array sparar alla nycklar
                     JSONArray keys = jsonObject.names();
                     this.setKeyLenght(keys.length());
+                    //value är en nyckel i taget som sen blir sparad i keylist
                     value = keys.getString(i);
-                    jsonObject.getString(value);
                     this.keyList.add(value);
-                    System.out.println(keyList);
                 }
 
 
@@ -104,62 +108,67 @@ public class ChooseFile {
                 String[] item = new String[keyList.size()];
                 for (int i = 0; i<jsonArray.length();i++) {
                     this.count = 0;
-                    for (String key : keyList) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String keyItem = jsonObject.getString(key);
-                        item[count]=keyItem;
-                        //System.out.println(Arrays.toString(item));
 
+                    for (String key : keyList) {
+                        // kollar i första delen av arrayn och tar fram JSOnobject
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        //tar fram ett value ur jsonobject och sparar det som en string
+                        String keyItem = jsonObject.getString(key);
+                        //sparar keyitem i item
+                        item[count]=keyItem;
                         count++;
+                        /*när count blir lika  med int keyLenght så görs en ny string array oneValue med samma storlek
+                         som keyLenght*/
                         if (count == keyLenght){
-                            String[] help = new String[keyLenght];
+                            String[] oneValue = new String[keyLenght];
                             secondCount=0;
                             for (String valueOF:item){
-                                help[secondCount]=valueOF;
+                                //sparar varje värde item Arrayn har i sig i oneValue
+                                oneValue[secondCount]=valueOF;
                                 secondCount++;
-                            }
-                            wholeList.add(help);
-                            System.out.println(Arrays.deepToString(help) + " HELP");
+                            };
+                            //sparar allt oneValue hade i sig
+                            wholeList.add(oneValue);
                         }
+                        //sparar titlarna en gång i en arrayList
                         if (i ==0 && count ==keyList.size()){
-                            /* title.add(Arrays.toString(item));
-                                System.out.println(title + " TITLE");*/
-                            title.addAll(Arrays.asList(item));
-                            System.out.println(title + "TITLE");
 
+                            title.addAll(Arrays.asList(item));
                         }
                     }
 
                 }
 
 
-               // System.out.println(this.page);
+                //tar bort första eftersom man inte vill ha titlarna i tabellen
                 wholeList.removeFirst();
+                //gör om arraylistan till en 2dArray med all information kvar
                 table2DArray = (String[][])this.wholeList.toArray(String[][]::new);
-               // System.out.println(Arrays.deepToString(table2DArray));
+
             } catch (Exception var10) {
                 System.out.println("Error " + var10.getMessage());
             }
         } else if (getFileName().equals("csv")) {
             try {
+                // skappar en scanner som går igenom filen man har valt
                 this.scan = new Scanner(file);
+                //väljer nästa del av filen
                 String line = this.scan.nextLine();
+                // sparar titlen i en string Array
                 header = line.split(",");
-              /* System.out.println(Arrays.deepToString(header));
-                System.out.println(this.getRow());*/
-
+                //scannar igenom hela filen och splittar ut all information som ska sparas i splitter string Array
                 while(this.scan.hasNext()) {
                     String newLine = this.scan.nextLine();
                     splitter = newLine.split(",", 0);
+                    //arraylistan sparar string Arrayn splitter
                     this.wholeList.add(splitter);
                 }
-
+                //stänger scanner
                 this.scan.close();
-               // System.out.println(this.wholeList.size());
+                //gör om arraylistan till en 2dArray med all information kvar
                 table2DArray = (String[][])this.wholeList.toArray((x$0) -> {
                     return new String[x$0][];
                 });
-               // System.out.println(Arrays.deepToString(table2DArray));
             } catch (Exception var9) {
                 System.out.println("Error " + var9.getMessage());
             }

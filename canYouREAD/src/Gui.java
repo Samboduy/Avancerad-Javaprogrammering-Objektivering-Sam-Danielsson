@@ -34,9 +34,10 @@ public class Gui {
         this.frame.setDefaultCloseOperation(3);
         this.frame.setExtendedState(6);
         this.mainPanel.setLayout(new BorderLayout());
-        //om den valda filen är json så kallas
+        //om den valda filen är json så kallas TabelJson metoden.
         if (ChooseFile.getFileName().equals("json")) {
             this.TabelJson();
+            //om det är csv så kallas Tabel metoden
         } else if (ChooseFile.getFileName().equals("csv")) {
             this.Tabel();
         }
@@ -46,12 +47,15 @@ public class Gui {
     }
 
     private void Tabel() {
+        // model tar emot en 2d array som är information och header blir då själva headersarna på tabellen
         this.model = new DefaultTableModel(ChooseFile.table2DArray, ChooseFile.header);
         JTable table = new JTable(this.model);
+        //sorterar tabellen
         table.setAutoCreateRowSorter(true);
+        //lägger till tabellen i mainPanel
         this.mainPanel.add(new JScrollPane(table), "Center");
     }
-
+    //Samma som ovanför
     private void TabelJson() {
         this.model = new DefaultTableModel(ChooseFile.table2DArray, ChooseFile.title.toArray());
         JTable table = new JTable(this.model);
