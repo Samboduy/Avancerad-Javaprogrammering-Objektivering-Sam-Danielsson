@@ -20,10 +20,13 @@ public class Gui {
     DefaultTableModel model;
 
     Gui() {
+        //skapar tabellen
         this.frame.setTitle("Table");
         this.frame.setLayout(new BorderLayout());
+        // skapar en file explorer
         JFileChooser chooser = new JFileChooser("canYouREAD/src/Files");
         chooser.showOpenDialog((Component)null);
+        //valda filen blir sparad
         String f = String.valueOf(chooser.getSelectedFile());
         File file = new File(f);
         new ChooseFile(file, chooser.getSelectedFile().getName());
@@ -31,6 +34,7 @@ public class Gui {
         this.frame.setDefaultCloseOperation(3);
         this.frame.setExtendedState(6);
         this.mainPanel.setLayout(new BorderLayout());
+        //om den valda filen är json så kallas
         if (ChooseFile.getFileName().equals("json")) {
             this.TabelJson();
         } else if (ChooseFile.getFileName().equals("csv")) {
